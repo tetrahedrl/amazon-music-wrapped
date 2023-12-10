@@ -1,14 +1,14 @@
 import pandas
 import numpy as np
-df = pandas.read_csv('Amazon-Music/listening.csv')
-df = df[['2023' in timestamp for timestamp in df.timestamp.values]]
+
 def first_str (x):
-    strs = x.values[[isinstance(y,str) for y in x.values]]
-    if len(strs):
-        return strs[0]
-    else:
-        return None
-    
+    for element in x:
+        if isinstance(element,str):
+            return element
+    return None
+
+df = pandas.read_csv('Amazon-Music/listening.csv')
+df = df[['2023' in timestamp for timestamp in df.timestamp.values]]    
 df = df.groupby(by='asin',as_index=False).agg({
     'title': first_str,
     'consumptionDurationMs':'sum',
@@ -28,3 +28,4 @@ sum_by_genre = df.groupby(by='genre',as_index=False).agg({
     'consumptionDurationMs':'sum'
 })
 sum_by_genre.sort_values(by='consumptionDurationMs').to_csv('top_genres.csv')
+print('total listening time: {}ms'.format(df.consumptionDurationMs.sum()))
