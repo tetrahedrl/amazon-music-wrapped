@@ -49,13 +49,13 @@ df = df.assign(
     finishes=[reason_dict.get('trackFinished') for reason_dict in df.terminationReason]
     )
 df = df.sort_values(by='consumptionDurationMs')
-df[['title','artist','genre','consumptionDurationMs','starts','finishes']].to_csv('top_songs.csv')
+df[['title','artist','genre','consumptionDurationMs','starts','finishes']].to_csv('out/top_songs.csv')
 sum_by_artist = df.groupby(by='artist',as_index=False).agg({
     'consumptionDurationMs':'sum'
 })
-sum_by_artist.sort_values(by='consumptionDurationMs').to_csv('top_artists.csv')
+sum_by_artist.sort_values(by='consumptionDurationMs').to_csv('out/top_artists.csv')
 sum_by_genre = df.groupby(by='genre',as_index=False).agg({
     'consumptionDurationMs':'sum'
 })
-sum_by_genre.sort_values(by='consumptionDurationMs').to_csv('top_genres.csv')
+sum_by_genre.sort_values(by='consumptionDurationMs').to_csv('out/top_genres.csv')
 print('total listening time: {}ms'.format(df.consumptionDurationMs.sum()))
